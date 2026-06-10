@@ -1,0 +1,62 @@
+#define BLYNK_TEMPLATE_ID "TMPL3kbkQ2ZXx"
+#define BLYNK_TEMPLATE_NAME "Smart City Innovation"
+#define BLYNK_AUTH_TOKEN "ni2rM9c1svX9i0aZBFC2YZhgREtk3vMM"
+
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+
+ 
+char auth[] = BLYNK_AUTH_TOKEN;
+
+char ssid[] = "abcd";  // type your wifi name
+char pass[] = "1234";  // type your wifi password
+ 
+#define Light  D4
+BlynkTimer timer;
+void notifyOnTheft()
+{
+  int detection = digitalRead(Light);//input from D4
+  Serial.println(detection);//from D4
+  //Input D4
+  if (detection==LOW) 
+  {
+   // Serial.println("Light On");
+   
+  }
+  else if (detection==HIGH)
+  {
+    //Serial.println("Light OFF");
+    Blynk.logEvent("light_detector","L1 PVPIT College Area");
+  }
+ 
+}
+
+void setup(){
+  pinMode(Light, INPUT);//LDR
+   Serial.begin(9600);
+  Blynk.begin(auth, ssid, pass);
+  timer.setInterval(500L, notifyOnTheft);
+  pinMode(D0,OUTPUT);
+  //pinMode(D2,INPUT);//PIR
+//  pinMode(D5,OUTPUT);//Ultra sonic output
+//  pinMode(D6,INPUT);//ultrasonic input
+  Serial.begin(9600);
+
+}
+
+void loop(){
+  Blynk.run();
+  timer.run();
+  digitalWrite(D0,HIGH);
+
+//int a = digitalRead(D2); 
+//Serial.print(a);
+//if (a==HIGH)
+//{
+//digitalWrite(D0,LOW);  
+//Serial.print("DETECTED");
+//delay(2000);
+//}
+
+}
